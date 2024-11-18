@@ -32,7 +32,7 @@ const PlaceCardItems = ({ place }) => {
                 <div>
                     <h2 className="font-bold text-lg">{place.placeName}</h2>
                     <h2 className="text-sm text-gray-500">{place.placeDetails}</h2>
-                    <h2 className="mt-2">🕙 {place.travelTime}</h2>
+                    <h2 className="mt-2">🕙 {place.timeToTravel}</h2>
                     {/* <Button className='mt-3' size='lg'><FaMapMarkedAlt /></Button> */}
                 </div>
             </div>

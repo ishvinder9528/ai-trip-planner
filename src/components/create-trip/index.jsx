@@ -163,7 +163,11 @@ const CreateTrip = () => {
             </div>
             <div className='my-10 flex justify-end'>
                 <Button onClick={onGeneraterTrip} disabled={validate || loading} >
-                    {loading ? <AiOutlineLoading3Quarters className='animate-spin w-7 h-7' /> : 'Generate trip'} Please Wait ~ 1 min</Button>
+                    {loading ?
+                        <>
+                            <AiOutlineLoading3Quarters className='animate-spin w-7 h-7' />  <span className="ml-2">Please Wait ~ 1 min</span>
+                        </>
+                        : 'Generate trip'}</Button>
             </div>
 
             <Dialog open={openDailog}>
