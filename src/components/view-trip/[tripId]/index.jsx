@@ -20,10 +20,8 @@ const ViewTrip = () => {
         const docRef = doc(db, "AITrips", tripId)
         const docSnap = await getDoc(docRef)
         if (docSnap.exists()) {
-            console.log("Document exists:", docSnap?.data());
             setTrip(docSnap.data())
         } else {
-            console.log("Document not found:", docRef);
             toast({
                 title: 'No Trip Found'
             })

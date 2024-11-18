@@ -32,7 +32,6 @@ const CreateTrip = () => {
     }
 
     useEffect(() => {
-        console.log("formData:", formData)
     }, [formData])
 
     const validate =
@@ -48,7 +47,6 @@ const CreateTrip = () => {
         }
         setLoading(true)
         if (formData?.noOfDays > 5) {
-            console.log("please enter Trip days less than 5");
             toast({
                 title: "Oh no! Please enter Trip days less than 5",
                 variant: "destructive"
@@ -60,10 +58,8 @@ const CreateTrip = () => {
             .replace('{traveller}', formData.traveller)
             .replace('{budget}', formData.budget)
             .replace('{noOfDays}', formData.noOfDays)
-        console.log("prompt:", FINAL_PROMT);
 
         const result = await chatSession.sendMessage(FINAL_PROMT)
-        console.log("result:", result?.response?.text());
         setLoading(false)
         saveAITrip(result?.response?.text())
 
@@ -71,7 +67,6 @@ const CreateTrip = () => {
 
     const login = useGoogleLogin({
         onSuccess: credentialResponse => {
-            console.log(credentialResponse);
             getUserProfilePic(credentialResponse)
         },
         onError: () => {
@@ -86,7 +81,6 @@ const CreateTrip = () => {
                 Accept: 'application/json'
             }
         }).then((response) => {
-            console.log(response);
             localStorage.setItem('user', JSON.stringify(response.data));
             setOpenDailog(false);
             onGeneraterTrip();
@@ -169,7 +163,7 @@ const CreateTrip = () => {
             </div>
             <div className='my-10 flex justify-end'>
                 <Button onClick={onGeneraterTrip} disabled={validate || loading} >
-                    {loading ? <AiOutlineLoading3Quarters className='animate-spin w-7 h-7' /> : 'Generate trip'}</Button>
+                    {loading ? <AiOutlineLoading3Quarters className='animate-spin w-7 h-7' /> : 'Generate trip'} Please Wait ~ 1 min</Button>
             </div>
 
             <Dialog open={openDailog}>
