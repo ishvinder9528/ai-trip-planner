@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import { db } from "../../../service/firebaseConfig"
 import { useToast } from "@/hooks/use-toast"
 import InfoSection from "./components/infoSection"
-import Hotels from "./components/hotels"
+import Hotels from "./components/Hotels"
 import PlacesToVisit from "./components/PlacesToVisit"
 import Footer from "./components/Footer"
 
