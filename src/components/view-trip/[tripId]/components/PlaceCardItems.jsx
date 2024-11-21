@@ -34,7 +34,7 @@ const PlaceCardItems = ({ place }) => {
                     <div className="w-[150px] h-[150px] bg-slate-200 animate-pulse rounded-xl"></div>
                 ) : (
                     // Show the actual image after it's loaded
-                    <img src={photoUrl || '/placeholder.jpg'} className="w-[150px] h-[150px] rounded-xl" />
+                    <img src={photoUrl} className="w-[150px] h-[150px] rounded-xl" />
                 )}
 
                 <div>

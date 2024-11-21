@@ -24,7 +24,7 @@ const UserTripCardItem = ({ trip }) => {
     return (
         <Link to={'/view-trip/' + trip?.id}>
             <div className="hover:scale-105 transition-all hover:shadow-lg rounded-lg">
-                <img src={photoUrl || "/placeholder.jpg"}
+                <img src={photoUrl}
                     className="rounded-xl object-cover w-full h-[250px]" />
 
                 <div>

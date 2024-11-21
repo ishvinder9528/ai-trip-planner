@@ -31,7 +31,7 @@ const HotelCardItems = ({ hotel }) => {
                 ) : (
                     // Show hotel photo once it's loaded
                     <img
-                        src={photoUrl || '/placeholder.jpg'}
+                        src={photoUrl}
                         alt={hotel.hotelName}
                         className="rounded-xl w-full h-[300px]"
                     />
