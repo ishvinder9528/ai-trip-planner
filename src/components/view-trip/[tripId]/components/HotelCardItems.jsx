@@ -23,7 +23,7 @@ const HotelCardItems = ({ hotel }) => {
     };
 
     return (
-        <div className="hover:scale-110 hover:shadow-xl hover:cursor-pointer hover:rounded-2xl transition-all">
+        <div className="md:hover:scale-110 hover:shadow-xl hover:cursor-pointer hover:rounded-2xl transition-all">
             <Link to={'https://www.google.com/maps/search/?api=1&query=' + hotel.hotelName + "," + hotel.hotelAddress} target="_blank">
                 {loading ? (
                     // Show skeleton loader if still loading
