@@ -21,9 +21,13 @@ const Header = () => {
   const [openDailog, setOpenDailog] = useState(false);
 
   const user = JSON.parse(localStorage.getItem('user'))
-  useEffect(() => {
 
-  }, [])
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
 
   const login = useGoogleLogin({
     onSuccess: credentialResponse => {
@@ -47,7 +51,7 @@ const Header = () => {
 
   return (
     <div className='p-3 shadow-sm flex justify-between items-center px-5' >
-        <img className='hover:cursor-pointer h-[40px]' src='/logo.svg' onClick={()=>navigate('/')}></img>
+      <img className='hover:cursor-pointer h-[40px]' src='/logo.svg' onClick={() => navigate('/')}></img>
 
       <div>
         {
