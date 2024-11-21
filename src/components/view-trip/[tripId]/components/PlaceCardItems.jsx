@@ -17,7 +17,7 @@ const PlaceCardItems = ({ place }) => {
         }
         await GetPlaceDetails(data).then((resp) => {
 
-            const photoUrl = PHOTO_REF_URL.replace('{NAME}', resp?.places[0]?.photos[3]?.name)
+            const photoUrl = PHOTO_REF_URL.replace('{NAME}', resp?.places[0]?.photos[0]?.name)
             setPhotoUrl(photoUrl)
         })
     }
