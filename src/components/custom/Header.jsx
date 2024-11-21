@@ -10,7 +10,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
+  DialogHeader, DialogTitle
 } from "@/components/ui/dialog"
 import { FcGoogle } from 'react-icons/fc'
 import axios from 'axios'
@@ -19,8 +19,7 @@ import { useNavigate } from 'react-router-dom'
 const Header = () => {
   const navigate = useNavigate()
   const [openDailog, setOpenDailog] = useState(false);
-
-  const user = JSON.parse(localStorage.getItem('user'))
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
 
   useEffect(() => {
     if (!user) {
@@ -32,9 +31,11 @@ const Header = () => {
   const login = useGoogleLogin({
     onSuccess: credentialResponse => {
       getUserProfilePic(credentialResponse)
+      setOpenDailog(false);
     },
-    onError: () => {
-      console.log('Login Failed');
+    onError: (error) => {
+      console.log('Login Failed:', error);
+      alert('Google Login Failed. Please try again.');
     },
   })
   const getUserProfilePic = async (token_info) => {
@@ -45,6 +46,7 @@ const Header = () => {
       }
     }).then((response) => {
       localStorage.setItem('user', JSON.stringify(response.data));
+      setUser(JSON.parse(localStorage.getItem('user')))
       setOpenDailog(false);
     })
   }
@@ -72,6 +74,7 @@ const Header = () => {
                   <h2 className='cursor-pointer' onClick={() => {
                     googleLogout();
                     localStorage.clear();
+                    setUser(null);
                     navigate('/')
                   }}>Logout</h2>
                 </PopoverContent>
@@ -83,10 +86,11 @@ const Header = () => {
             <Button onClick={() => setOpenDailog(true)}>Sign In</Button>
         }
       </div>
-      <Dialog open={openDailog}>
+      <Dialog open={openDailog} onOpenChange={setOpenDailog}>
 
         <DialogContent>
           <DialogHeader>
+            <DialogTitle></DialogTitle>
             <DialogDescription>
               <img src='/logo.svg' />
               <h2 className='font-bold text-lg mt-7 flex justify-start'>Sign In with Google</h2>
