@@ -30,8 +30,8 @@ const MyTrips = () => {
             trips.push(doc.data());
         });
 
-        setUserTrips(trips); // Set the fetched trips
-        setLoading(false); // Set loading to false after fetching
+        setUserTrips(trips); 
+        setLoading(false); 
     };
 
     return (
@@ -42,20 +42,17 @@ const MyTrips = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mt-10">
                 {loading ? (
-                    // Show loading skeletons while trips are being fetched
                     [1, 2, 3, 4, 5, 6].map((trip, index) => (
                         <div key={index} className="h-[300px] w-full bg-slate-200 animate-pulse rounded-xl">
                         </div>
                     ))
                 ) : userTrips?.length > 0 ? (
-                    // Show actual trip items when trips are fetched
                     userTrips.map((trip, index) => (
                         <div key={index}>
                             <UserTripCardItem trip={trip} className='' />
                         </div>
                     ))
                 ) : (
-                    // Show "No trips" message if no trips found
                     <div className="col-span-full">
                         <div className="flex flex-col items-center my-20">
                             <FcDeleteDatabase className="w-[200px] h-[200px]" />

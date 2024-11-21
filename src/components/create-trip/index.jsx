@@ -46,14 +46,7 @@ const CreateTrip = () => {
         !formData || !formData.noOfDays || !formData.location || !formData.traveller || !formData.budget;
 
     const onGeneraterTrip = async () => {
-      setUser(JSON.parse(localStorage.getItem('user')))
-        let user = localStorage.getItem('user');
-        if (!user) {
-            setOpenDailog(true)
-            return;
-        }
 
-        setLoading(true)
         if (formData?.noOfDays > 5) {
             toast({
                 title: "Oh no! Please enter Trip days less than 5",
@@ -61,6 +54,16 @@ const CreateTrip = () => {
             })
             return;
         }
+
+        setUser(JSON.parse(localStorage.getItem('user')))
+        let user = localStorage.getItem('user');
+
+        if (!user) {
+            setOpenDailog(true)
+            return;
+        }
+        setLoading(true)
+
         const FINAL_PROMT = AIPrompt
             .replace('{location}', formData.location.label)
             .replace('{traveller}', formData.traveller)
@@ -126,7 +129,7 @@ const CreateTrip = () => {
             <h2 className='font-bold text-3xl'>Tell us your travel preferences 🏕️🌴</h2>
             <p className='mt-3 text-gray-500 text-xl'>Just provide some basic information, and our trip planner will generate a customized itinerary based on your preferences.</p>
 
-            <div className='mt-20 flex flex-col gap-10'>
+            <div className='md:mt-20 mt-10 flex flex-col gap-10'>
                 <div>
                     <h2 className='text-xl my-3 font-medium'>What is your destination of choice?</h2>
                     <GooglePlacesAutocomplete
@@ -143,14 +146,14 @@ const CreateTrip = () => {
 
                 <div>
                     <h2 className='text-xl my-3 font-medium'>How many days are you planning your trip?</h2>
-                    <Input placeholder={'Ex.3'} type='number' min='1'
+                    <Input placeholder={'Ex.3'} type='number' min='1' max='5'
                         onChange={(e) => handleInputChnage("noOfDays", e.target.value)} />
                 </div>
 
                 <div>
                     <h2 className='text-xl my-3 font-medium'>What is your Budget</h2>
                     <p>The Budget is exclusively allocated for activities and dining purposes.</p>
-                    <div className='grid grid-cols-3 gap-5 mt-5'>
+                    <div className='grid md:grid-cols-3 gap-5 mt-5' >
                         {SelectBudgetOptions.map((item, index) => (
                             <div key={index} className={`p-4 border rounded-lg hover: shadow-lg cursor-pointer
                                 ${formData?.budget == item.title && 'shadow-lg border-black'}`
@@ -166,8 +169,8 @@ const CreateTrip = () => {
                 </div>
 
                 <div>
-                    <h2 className='text-xl my-3 font-medium'>Who do you plam on travel</h2>
-                    <div className='grid grid-cols-4 gap-5 mt-5'>
+                    <h2 className='text-xl my-3 font-medium'>Who do you plan on travel</h2>
+                    <div className='grid md:grid-cols-4 grid-cols-2 gap-5 mt-5'>
                         {SelectTravelesList.map((item, index) => (
                             <div key={index} className={`p-4 border rounded-lg hover: shadow-lg cursor-pointer
                                  ${formData?.traveller == item.people && 'shadow-lg border-black'
@@ -182,7 +185,11 @@ const CreateTrip = () => {
                 </div>
             </div>
             <div className='my-10 flex justify-end'>
-                <Button onClick={onGeneraterTrip} disabled={validate || loading} >
+                <Button onClick={() => {
+
+                    onGeneraterTrip()
+                }
+                } disabled={validate || loading} >
                     {loading ?
                         <>
                             <AiOutlineLoading3Quarters className='animate-spin w-7 h-7' />  <span className="ml-2">Please Wait ~ 1 min</span>

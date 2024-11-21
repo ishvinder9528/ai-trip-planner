@@ -27,13 +27,13 @@ const HotelCardItems = ({ hotel }) => {
             <Link to={'https://www.google.com/maps/search/?api=1&query=' + hotel.hotelName + "," + hotel.hotelAddress} target="_blank">
                 {loading ? (
                     // Show skeleton loader if still loading
-                    <div className="h-[300px] w-full bg-slate-200 animate-pulse rounded-xl"></div>
+                    <div className="h-[150px] w-full md:h-[300px] md:w-full bg-slate-200 animate-pulse rounded-xl"></div>
                 ) : (
                     // Show hotel photo once it's loaded
                     <img
                         src={photoUrl}
                         alt={hotel.hotelName}
-                        className="rounded-xl w-full h-[300px]"
+                        className="rounded-xl h-[150px] w-full md:h-[300px] md:w-full"
                     />
                 )}
 
