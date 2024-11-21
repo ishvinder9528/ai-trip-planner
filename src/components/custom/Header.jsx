@@ -14,12 +14,15 @@ import {
 } from "@/components/ui/dialog"
 import { FcGoogle } from 'react-icons/fc'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Header = () => {
+  const navigate = useNavigate()
   const [openDailog, setOpenDailog] = useState(false);
 
   const user = JSON.parse(localStorage.getItem('user'))
   useEffect(() => {
+
   }, [])
 
   const login = useGoogleLogin({
@@ -39,28 +42,22 @@ const Header = () => {
     }).then((response) => {
       localStorage.setItem('user', JSON.stringify(response.data));
       setOpenDailog(false);
-      window.location.reload();
     })
   }
 
   return (
     <div className='p-3 shadow-sm flex justify-between items-center px-5' >
-      <a href='/'>
-        <img className='hover:cursor-pointer h-[40px]' src='/logo.svg'></img>
-      </a>
+        <img className='hover:cursor-pointer h-[40px]' src='/logo.svg' onClick={()=>navigate('/')}></img>
 
       <div>
         {
           user ?
             <div className='flex gap-5 items-center'>
-              <a href='/create-trip'>
-                <Button className='rounded-full'
-                  variant='outline'>+ Create Trip</Button>
-              </a>
-              <a href='/my-trips'>
-                <Button className='rounded-full'
-                  variant='outline'>My Trips</Button>
-              </a>
+              <Button onClick={() => navigate('/create-trip')} className='rounded-full'
+                variant='outline'>+ Create Trip</Button>
+
+              <Button onClick={() => navigate('/my-trips')} className='rounded-full'
+                variant='outline'>My Trips</Button>
 
 
               <Popover>
@@ -71,7 +68,7 @@ const Header = () => {
                   <h2 className='cursor-pointer' onClick={() => {
                     googleLogout();
                     localStorage.clear();
-                    window.location.reload();
+                    navigate('/')
                   }}>Logout</h2>
                 </PopoverContent>
               </Popover>
