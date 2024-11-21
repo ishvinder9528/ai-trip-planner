@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
 import { Input } from '../ui/input';
 import { AIPrompt, SelectBudgetOptions, SelectTravelesList } from '../../constants/options';
@@ -18,12 +18,16 @@ import axios from 'axios';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../service/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/userContext';
 
 const CreateTrip = () => {
     const [place, setPlace] = useState();
     const [formData, setFormData] = useState();
     const [openDailog, setOpenDailog] = useState(false);
     const [loading, setLoading] = useState(false)
+    const [cred, setCred] = useState()
+    const { user, setUser } = useContext(UserContext)
+
     const { toast } = useToast()
     const navigate = useNavigate()
 
@@ -32,19 +36,23 @@ const CreateTrip = () => {
     }
 
     useEffect(() => {
-    }, [formData])
+        if (cred) {
+            getUserProfilePic(cred)
+        }
+    }, [cred]);
+
 
     const validate =
         !formData || !formData.noOfDays || !formData.location || !formData.traveller || !formData.budget;
 
     const onGeneraterTrip = async () => {
-
-        const user = localStorage.getItem('user')
-
+      setUser(JSON.parse(localStorage.getItem('user')))
+        let user = localStorage.getItem('user');
         if (!user) {
             setOpenDailog(true)
             return;
         }
+
         setLoading(true)
         if (formData?.noOfDays > 5) {
             toast({
@@ -59,15 +67,24 @@ const CreateTrip = () => {
             .replace('{budget}', formData.budget)
             .replace('{noOfDays}', formData.noOfDays)
 
-        const result = await chatSession.sendMessage(FINAL_PROMT)
-        setLoading(false)
-        saveAITrip(result?.response?.text())
+        const result = await chatSession.sendMessage(FINAL_PROMT);
+        setLoading(false);
 
+        if (result?.response?.text()) {
+            saveAITrip(result?.response?.text());
+        } else {
+            toast({
+                title: "Oops, no data generated!",
+                variant: "destructive"
+            });
+        }
     }
+
 
     const login = useGoogleLogin({
         onSuccess: credentialResponse => {
             getUserProfilePic(credentialResponse)
+            setCred(credentialResponse)
         },
         onError: () => {
             console.log('Login Failed');
@@ -75,17 +92,20 @@ const CreateTrip = () => {
     })
 
     const getUserProfilePic = async (token_info) => {
-        axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token_info.access_token}`, {
+        await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token_info.access_token}`, {
             headers: {
                 'Authorization': 'Bearer ' + token_info.access_token,
                 Accept: 'application/json'
             }
         }).then((response) => {
-            localStorage.setItem('user', JSON.stringify(response.data));
+            const userData = response.data;
+            localStorage.setItem('user', JSON.stringify(userData))
+            setUser(JSON.parse(localStorage.getItem('user')))
             setOpenDailog(false);
             onGeneraterTrip();
         })
     }
+
 
     const saveAITrip = async (tripData) => {
         setLoading(true)
@@ -170,7 +190,7 @@ const CreateTrip = () => {
                         : 'Generate trip'}</Button>
             </div>
 
-            <Dialog open={openDailog}>
+            <Dialog open={openDailog} onOpenChange={setOpenDailog}>
 
                 <DialogContent>
                     <DialogHeader>

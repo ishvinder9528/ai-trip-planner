@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import {
   Popover,
@@ -15,11 +15,12 @@ import {
 import { FcGoogle } from 'react-icons/fc'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../../context/userContext'
 
 const Header = () => {
   const navigate = useNavigate()
   const [openDailog, setOpenDailog] = useState(false);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
+  const {user,setUser}= useContext(UserContext)
 
   useEffect(() => {
     if (!user) {
