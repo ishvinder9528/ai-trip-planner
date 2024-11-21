@@ -1,28 +1,43 @@
 import { useEffect, useState } from "react";
-import { GetPlaceDetails, PHOTO_REF_URL, } from "../../../../service/GlobalApi";
-import { Button } from "../../../ui/button"
+import { GetPlaceDetails, PHOTO_REF_URL } from "../../../../service/GlobalApi";
+import { Button } from "../../../ui/button";
 import { IoIosSend } from "react-icons/io";
 
-
 const InfoSection = ({ trip }) => {
-    const [photoUrl, setPhotoUrl] = useState()
+    const [photoUrl, setPhotoUrl] = useState();
+    const [loading, setLoading] = useState(true); // Added loading state
+
     useEffect(() => {
-        trip && GetPlacePhoto()
-    }, [trip])
+        if (trip) {
+            GetPlacePhoto();
+        }
+    }, [trip]);
 
     const GetPlacePhoto = async () => {
         const data = {
-            textQuery: trip?.userSelection?.location?.label
-        }
-        await GetPlaceDetails(data).then((resp) => {            
-            const photoUrl = PHOTO_REF_URL.replace('{NAME}', resp?.places[0]?.photos[0]?.name)
-            setPhotoUrl(photoUrl)
-        })
-    }
+            textQuery: trip?.userSelection?.location?.label,
+        };
+        setLoading(true); // Set loading to true before fetching
+        await GetPlaceDetails(data).then((resp) => {
+            const photoUrl = PHOTO_REF_URL.replace("{NAME}", resp?.places[0]?.photos[0]?.name);
+            setPhotoUrl(photoUrl);
+            setLoading(false); // Set loading to false after fetching photo
+        });
+    };
 
     return (
         <div>
-            <img src={photoUrl} className="h-[300px] w-full object-cover rounded-xl" />
+            {loading ? (
+                // Show skeleton loader while the image is being fetched
+                <div className="h-[300px] w-full bg-slate-200 animate-pulse rounded-xl"></div>
+            ) : (
+                // Show the image after it is fetched
+                <img
+                    src={photoUrl}
+                    className="h-[300px] w-full object-cover rounded-xl"
+                    alt={trip?.userSelection?.location?.label}
+                />
+            )}
 
             <div className="flex justify-between items-center">
                 <div className="my-5 flex flex-col gap-2">
@@ -34,11 +49,12 @@ const InfoSection = ({ trip }) => {
                     </div>
                 </div>
 
-                <Button><IoIosSend /></Button>
-
+                <Button>
+                    <IoIosSend />
+                </Button>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default InfoSection
+export default InfoSection;
