@@ -33,7 +33,7 @@ const InfoSection = ({ trip }) => {
                 // Show the image after it is fetched
                 <img
                     src={photoUrl}
-                    className="h-[150px] md:h-[300px] w-full object-cover rounded-xl"
+                    className="h-[150px] md:h-[300px] w-full object-cover rounded-xl object-cover"
                     alt={trip?.userSelection?.location?.label}
                 />
             )}

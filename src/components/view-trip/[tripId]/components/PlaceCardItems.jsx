@@ -28,12 +28,12 @@ const PlaceCardItems = ({ place }) => {
 
     return (
         <Link to={"https://www.google.com/maps/search/?api=1&query=" + place.placeName + "," + place.placeAddress} target="_blank">
-            <div className="border rounded-xl p-5 mt-2 flex flex-col md:flex-row gap-5 md:hover:scale-110 transition-all hover:cursor-pointer hover:shadow-xl">
+            <div className="border rounded-xl p-5 mt-2 flex flex-col md:flex-row gap-5 md:hover:scale-110 transition-all md:hover:cursor-pointer md:hover:shadow-xl">
                 {loading ? (
                     // Skeleton loader for image while loading
                     <div className="w-[150px] h-[150px] bg-slate-200 animate-pulse rounded-xl"></div>
                 ) : (
-                    <img src={photoUrl} className="md:w-[150px] h-[150px] rounded-xl" />
+                    <img src={photoUrl} className="md:w-[150px] h-[150px] rounded-xl object-cover" />
                 )}
 
                 <div>
